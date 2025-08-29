@@ -8,6 +8,7 @@
   --border: oklch(0.2809 0 0);
   --card: oklch(0.2046 0 0);
   --secondary: oklch(0.2603 0 0);
+  --muted-foreground: oklch(0.7122 0 0);
 }
 
 @theme {
@@ -18,6 +19,7 @@
   --color-border: var(--border);
   --color-card: var(--card);
   --color-secondary: var(--secondary);
+  --color-muted-foreground: var(--muted-foreground);
 }
 
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { PulseEffect } from '$lib';
 	
 	let { children } = $props();
 </script>
@@ -28,7 +29,10 @@
 
 {@render children?.()}
 
-<footer class="fixed flex items-center w-screen justify-between bottom-0 border-t border-border h-7 gap-6 px-6 z-50">
-  <div class="text-xs">Map Pangaia v1.0</div>
-  <div class="text-xs">Last update 10 minutes ago</div>
+<footer class="fixed flex items-center w-screen bg-card justify-between bottom-0 border-t border-border h-7 gap-6 px-6 z-50">
+  <div class="text-xs text-muted-foreground">Map pangaia v1.0</div>
+  <div class="flex items-center gap-2">
+    <PulseEffect size={10} duration={4} />
+    <div class="text-xs text-muted-foreground">Last update 10 minutes ago</div>
+  </div>
 </footer>
