@@ -9,12 +9,17 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<header class="flex fixed w-screen h-14 bg-card border-b border-border items-center z-50">
-  <div class="flex font-bold items-center">
-    <h1 class="text-2xl mx-6 font-supreme">
-      BREEK 
-    </h1>
-    <a href="/" class="rounded-md mx-4 py-1 px-3 cursor-pointer font-supreme">
+<header class="flex fixed w-screen h-14 bg-card border-b border-border items-center z-50 px-4">
+  <div class="flex gap-4 font-bold items-center">
+    <div class="flex gap-2 items-center">
+      <svg class="w-full h-8" viewBox="0 0 63 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 91.6284L63 75.9963V10.9963L27.9448 19.6945V0L10 5.54098V61.3815L27.9448 56.1142V40.3406L43.0552 36.5912V61.3815L0 72.0648V91.6284Z" class="fill-primary"/>
+      </svg>
+      <h1 class="text-2xl">
+        BREEK 
+      </h1>
+    </div>
+    <a href="/" class="rounded-md py-1 px-3 cursor-pointer hover:bg-secondary">
       Map
     </a>
   </div>
@@ -24,6 +29,6 @@
 {@render children?.()}
 
 <footer class="fixed flex items-center w-screen justify-between bottom-0 border-t border-border h-7 gap-6 px-6 z-50">
-  <div class="text-xs">Map Pangaia v1.0.0</div>
+  <div class="text-xs">Map Pangaia v1.0</div>
   <div class="text-xs">Last update 10 minutes ago</div>
 </footer>

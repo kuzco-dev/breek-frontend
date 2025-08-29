@@ -1,2 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  import { Map } from "$lib";
+  import type { PageData } from './$types';
+
+  export let data: PageData;
+</script>
+
+<main class="h-screen w-screen pt-14 pb-7">
+ 
+  <div class="flex justify-center items-center pt-10">
+    <Map teams={data.teams} />
+  </div>
+</main>

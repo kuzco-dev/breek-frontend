@@ -1,28 +1,23 @@
 @import 'tailwindcss';
 
 :root {
-
   --supreme: 'Supreme', sans-serif;
-
   --background: oklch(0.1822 0 0);
   --foreground: oklch(0.9288 0.0126 255.5078);
-  --primary: oklch(0.7153 0.1756 155.3522);
+  --primary: oklch(0.8125 0.2004 155.1213);
   --border: oklch(0.2809 0 0);
   --card: oklch(0.2046 0 0);
-
-
+  --secondary: oklch(0.2603 0 0);
 }
 
 @theme {
-
   --font-supreme: var(--supreme);
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-border: var(--border);
   --color-card: var(--card);
-  
+  --color-secondary: var(--secondary);
 }
 
 
