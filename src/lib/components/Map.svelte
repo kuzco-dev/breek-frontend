@@ -1,5 +1,9 @@
 <script lang="ts">
   // Interface pour typer les données des équipes
+
+  import { X } from "$lib"
+  import { onMount } from "svelte";
+  
   interface Team {
     id: string;
     team_name: string;
@@ -22,11 +26,53 @@
   let scale = $state(1);    
   let offsetX = $state(0);   
   let offsetY = $state(0);   
-  const containerSize = 960;
-  const contentSize = 960;
+  let containerSize = $state(900);
+  let contentSize = $state(900);
   let isDragging = $state(false);
   let startX = $state<any>(0);
   let startY = $state<any>(0);
+  let mapContainer: HTMLElement;
+
+  // Fonction pour calculer la taille de la carte basée sur l'écran
+  function calculateMapSize(): number {
+    if (typeof window === 'undefined') return 900;
+    
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    
+    // Utiliser la plus petite dimension pour s'assurer que la carte tient
+    const maxSize = Math.min(screenWidth * 0.8, screenHeight * 0.7);
+    
+    // Appliquer les limites min/max
+    return Math.max(200, Math.min(900, maxSize));
+  }
+
+  // Fonction pour mettre à jour la taille de la carte
+  function updateMapSize(): void {
+    const newSize = calculateMapSize();
+    containerSize = newSize;
+    contentSize = newSize;
+    
+    // Réinitialiser les offsets pour centrer la carte
+    offsetX = 0;
+    offsetY = 0;
+    scale = 1;
+  }
+
+  // Écouter les changements de taille d'écran
+  onMount(() => {
+    updateMapSize();
+    
+    const handleResize = () => {
+      updateMapSize();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   function clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max);
@@ -72,8 +118,7 @@
   ];
 
   const GRID_SIZE = 30; // Nombre de carrés dans la grille
-  const MAP_SIZE = 960; // Taille de la carte en pixels
-  const CELL_SIZE = MAP_SIZE / GRID_SIZE; // Taille d'un carré en pixels
+  const CELL_SIZE = $derived(containerSize / GRID_SIZE); // Taille d'un carré en pixels
   const BORDER_SIZE = 1; // Taille de la bordure en pixels
 
   function getMapImageProps(x: number, y: number, size: number) {
@@ -115,25 +160,36 @@
   const pathData = $derived(pixelPoints.map((point, index) => {
     return `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`;
   }).join(' ') + ' Z');
+
+  let showDiscoverTeam = $state(false);
+
+  function handleDiscoverTeam(teamId: string){
+    showDiscoverTeam = true;
+    console.log(teamId);
+  }
+
+
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div 
-  class="w-[960px] h-[960px]" 
+  bind:this={mapContainer}
+  class="relative" 
+  style="width: {containerSize}px; height: {containerSize}px;"
   onwheel={onWheel} 
   onmousedown={startDrag} 
   onmousemove={drag}
   onmouseup={stopDrag}
   onmouseleave={stopDrag}
 >
-  <svg class="w-[960px] h-[960px]">
+  <svg style="width: {containerSize}px; height: {containerSize}px;">
     <g transform={`translate(${offsetX}, ${offsetY}) scale(${scale})`}>
       {#each Array(31) as _, i}
         <line 
           x1="0" 
-          y1={i * (960 / 30)} 
-          x2="960" 
-          y2={i * (960 / 30)} 
+          y1={i * (containerSize / 30)} 
+          x2={containerSize} 
+          y2={i * (containerSize / 30)} 
           class="stroke-border" 
           stroke-width="1"
         />
@@ -141,10 +197,10 @@
 
       {#each Array(31) as _, i}
         <line 
-          x1={i * (960 / 30)} 
+          x1={i * (containerSize / 30)} 
           y1="0" 
-          x2={i * (960 / 30)} 
-          y2="960" 
+          x2={i * (containerSize / 30)} 
+          y2={containerSize} 
           class="stroke-border" 
           stroke-width="1"
         />
@@ -173,7 +229,6 @@
           style="transition: stroke-width 0.3s ease-in-out;"
         />
         
-        <!-- svelte-ignore a11y_no_static_element_interactions -->
         <image 
           href={'/teams/' + (team.image_url || '')} 
           x={props.imageX} 
@@ -183,6 +238,7 @@
           preserveAspectRatio="xMidYMid slice"
           onmouseover={() => handleMapImageMouseOver(team.id)}
           onmouseout={() => handleMapImageMouseOut(team.id)}
+          onclick={() => handleDiscoverTeam(team.id)}
           class="cursor-pointer"
         />
       {/each}
@@ -196,10 +252,33 @@
         stroke-linejoin="round"
         opacity="0.9"
       />
-
-      
-
     
     </g>
   </svg>
 </div>
+
+{#if showDiscoverTeam}
+	<div class="fixed right-4 top-22 flex flex-col justify-around h-60 bg-card border border-border p-4  w-100 z-[49]">
+    <div class="flex justify-between">
+      <div class="flex">
+        image ici
+        <h1 class="text-2xl">Karmine Corp</h1>
+      </div>
+      <button onclick={() => { showDiscoverTeam = false; }} class="cursor-pointer"><X /></button>
+    </div>
+    <div class="border border-b border-border my-4">
+    </div>
+    <div class="flex gap-3 justify-around">
+      <div class="flex flex-col items-center">
+        <div class="text-sm text-muted-foreground">Total fans</div>
+        <div class="font-semibold text-lg">2 302</div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="text-sm text-muted-foreground">Globals stats</div>
+        <div class="font-semibold text-lg">23 243</div>
+      </div>
+    </div>
+    <div class="border border-b border-border my-4"></div>
+    <a href="/karminecorp" type="submit" class="text-center bg-green-400 p-2 rounded-lg w-full cursor-pointer hover:bg-primary/90 transition-colors duration-200">Discover</a>
+  </div>
+{/if}

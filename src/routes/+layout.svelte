@@ -11,20 +11,18 @@
 </svelte:head>
 
 <header class="flex fixed w-screen h-14 bg-card border-b justify-between border-border items-center z-50 px-4">
-  <div class="flex gap-4 font-bold items-center">
-    <div class="flex gap-2 items-center">
-      <svg class="w-full h-8" viewBox="0 0 63 92" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 91.6284L63 75.9963V10.9963L27.9448 19.6945V0L10 5.54098V61.3815L27.9448 56.1142V40.3406L43.0552 36.5912V61.3815L0 72.0648V91.6284Z" class="fill-primary"/>
-      </svg>
-      <h1 class="text-2xl">
-        BREEK 
-      </h1>
-    </div>
+
+  <div class="flex items-center">
     <a href="/" class="rounded-md py-1 px-3 cursor-pointer transition-colors duration-200 hover:bg-secondary">
-      Map
+      Discover the map
     </a>
-    
   </div>
+  <div class="flex items-center">
+    <svg class="w-full h-8" viewBox="0 0 63 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 91.6284L63 75.9963V10.9963L27.9448 19.6945V0L10 5.54098V61.3815L27.9448 56.1142V40.3406L43.0552 36.5912V61.3815L0 72.0648V91.6284Z" class="fill-primary"/>
+    </svg>
+  </div>
+  
   <NoAuthHeader />
 </header>
 
