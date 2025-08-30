@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
   try {
-    const response = await fetch('http://localhost:3001/teams');
+    const response = await fetch('http://168.231.85.107:3001/teams');
     const teams = await response.json();
     
     return {
