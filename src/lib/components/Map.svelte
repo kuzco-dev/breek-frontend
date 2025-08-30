@@ -162,8 +162,10 @@
   }).join(' ') + ' Z');
 
   let showDiscoverTeam = $state(false);
+  let selectedTeam = $state<Team | null>(null);
 
   function handleDiscoverTeam(teamId: string){
+    selectedTeam = teams.find(team => team.id === teamId) || null;
     showDiscoverTeam = true;
     console.log(teamId);
   }
@@ -257,12 +259,12 @@
   </svg>
 </div>
 
-{#if showDiscoverTeam}
+{#if showDiscoverTeam && selectedTeam}
 	<div class="fixed right-4 top-22 flex flex-col justify-around h-60 bg-card border border-border p-4  w-100 z-[49]">
     <div class="flex justify-between">
       <div class="flex">
-        image ici
-        <h1 class="text-2xl">Karmine Corp</h1>
+        <img src={'/teams/' + selectedTeam.image_url} alt={selectedTeam.name} class="w-8 h-8 mr-2 rounded" />
+        <h1 class="text-2xl">{selectedTeam.name}</h1>
       </div>
       <button onclick={() => { showDiscoverTeam = false; }} class="cursor-pointer"><X /></button>
     </div>
@@ -279,6 +281,6 @@
       </div>
     </div>
     <div class="border border-b border-border my-4"></div>
-    <a href="/karminecorp" type="submit" class="text-center bg-green-400 p-2 rounded-lg w-full cursor-pointer hover:bg-primary/90 transition-colors duration-200">Discover</a>
+    <a href="/{selectedTeam.team_name}" type="submit" class="text-center bg-primary p-2 rounded-lg w-full cursor-pointer hover:bg-primary/90 transition-colors duration-200">Discover</a>
   </div>
 {/if}
